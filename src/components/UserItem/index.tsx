@@ -8,10 +8,14 @@ import VisibilityOff from "../icons/VisibilityOff";
 
 const b = block('user_card');
 
-const UserItem: FC<IUser> = ({ avatar_url, login, id, html_url, draggable }) => {
+const UserItem: FC<IUser> = ({ avatar_url, login, id, html_url, draggable, onDragStart }) => {
     const [open, setOpen] = useState(false)
     return (
-        <div className={ b() } draggable={ draggable }>
+        <div
+            className={ b() }
+            draggable={ draggable }
+            onDragStart={ () => onDragStart && onDragStart() }
+        >
             <div
                 className={ b('header') }
                 onClick={ () => setOpen(!open) }

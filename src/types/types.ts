@@ -6,7 +6,7 @@ export interface IUser {
     html_url: string;
     avatar_url: string;
     draggable?: boolean;
-    onDragStart?: DragEvent;
+    onDragStart?: () => void;
     onDragEnd?: DragEvent;
     onDragLeave?: DragEvent;
     onDragOver?: DragEvent;
