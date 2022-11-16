@@ -1,0 +1,27 @@
+@import '../../styles/root.scss';
+
+.user-list {
+  position: relative;
+  width: 420px;
+  height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 2px solid $second-color;
+  background-color: $white;
+
+  &__header {
+    position: sticky;
+    top: 0;
+    padding: 10px;
+    font-size: 22px;
+    color: $white;
+    background-color: $second-color;
+  }
+
+  &__list {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+  }
+}
