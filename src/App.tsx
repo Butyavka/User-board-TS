@@ -21,7 +21,7 @@ const App = () => {
 
     return (
         <Layout>
-            <div style={{ display: 'flex', columnGap: '20px' }}>
+            <div style={{ display: 'flex', columnGap: '20px', paddingTop: '40px' }}>
                 <UserList users={ users } loading={ loading } header={ 'All Users' }/>
                 <UserList users={ favoriteUsers } loading={ loading } header={ 'Favorite Users' }/>
             </div>

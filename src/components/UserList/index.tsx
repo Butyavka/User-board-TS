@@ -18,6 +18,7 @@ const UserList: FC<IUserList> = ({ users, loading, header }) => {
             <div className={ b('list') }>
                 {users.map(user => (
                     <UserItem
+                        draggable={ true }
                         id={ user.id }
                         avatar_url={ user.avatar_url }
                         html_url={ user.html_url }

@@ -2,8 +2,25 @@
 
 .user_card {
   max-width: 400px;
-  padding: 10px;
-  border: 1px solid $main-color;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+
+  &__card {
+    padding: 10px;
+    display: none;
+
+    &_open {
+      display: block;
+    }
+  }
+
+  &__header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $pink-d9;
+    color: $white;
+  }
 
   &__top {
     display: flex;
@@ -13,7 +30,16 @@
 
   &__name {
     font-size: 18px;
-    color: $main-color;
+
+    &-box {
+      display: flex;
+      column-gap: 20px;
+    }
+  }
+
+  &__icon {
+    width: 20px;
+    fill: $white;
   }
 
   &__avatar {
@@ -51,13 +77,12 @@
     }
 
     &:hover {
-      color: $link-color;
+      color: $pink-d9;
     }
   }
 
   &__id {
     font-size: 18px;
-    color: $main-color;
     font-weight: bold;
   }
 }

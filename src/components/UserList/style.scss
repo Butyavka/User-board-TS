@@ -4,9 +4,8 @@
   position: relative;
   width: 420px;
   height: 80vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  border: 2px solid $second-color;
+  overflow: hidden;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
   background-color: $white;
 
   &__header {
@@ -19,9 +18,22 @@
   }
 
   &__list {
+    height: calc(100% - 67px);
     padding: 10px;
     display: flex;
     flex-direction: column;
     row-gap: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+      background-color: $white;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $pink-d9;
+      border-radius: 145px;
+    }
   }
 }
