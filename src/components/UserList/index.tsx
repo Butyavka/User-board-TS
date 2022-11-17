@@ -1,11 +1,11 @@
 import './style.scss'
-import React, {FC, useState} from 'react';
-import {IUser, IUserList} from "../../types/types";
-import UserItem from "../UserItem";
-import block from "bem-cn-lite";
-import Loading from "../Loading";
-import Empty from "../Empty";
-const b = block('user-list');
+import React, {FC, useState} from 'react'
+import {IUser, IUserList} from '../../types/types'
+import UserItem from '../UserItem'
+import block from 'bem-cn-lite'
+import Loading from '../Loading'
+import Empty from '../Empty'
+const b = block('user-list')
 
 const UserList: FC<IUserList> = ({ users, loading, header }) => {
     const [currentUser, setCurrentUser] = useState<IUser>()
@@ -22,6 +22,7 @@ const UserList: FC<IUserList> = ({ users, loading, header }) => {
             <div className={ b('list') }>
                 {users.map(user => (
                     <UserItem
+                        key={ user.id }
                         onDragStart={ dragStartHandler(user) }
                         draggable={ true }
                         id={ user.id }
@@ -41,7 +42,7 @@ const UserList: FC<IUserList> = ({ users, loading, header }) => {
             </div>
             {loading ? <Loading/> : getContent()}
         </div>
-    );
-};
+    )
+}
 
-export default UserList;
+export default UserList

@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC } from 'react'
 import './style.scss'
-import block from "bem-cn-lite";
+import block from 'bem-cn-lite'
 
-const b = block('layout');
+const b = block('layout')
 
 type Props = { children: React.ReactNode };
 
@@ -13,7 +13,7 @@ const Layout: FC<Props> = ({ children }) => {
                 {children}
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Layout;
+export default Layout

@@ -1,15 +1,16 @@
 import './style.scss'
-import React, {FC, useState} from 'react';
-import {IUser} from "../../types/types";
-import block from 'bem-cn-lite';
-import Visibility from "../icons/Visibility";
-import Icon from "../Icon";
-import VisibilityOff from "../icons/VisibilityOff";
+import React, {FC, useState} from 'react'
+import {IUser} from '../../types/types'
+import block from 'bem-cn-lite'
+import Visibility from '../icons/Visibility'
+import Icon from '../Icon'
+import VisibilityOff from '../icons/VisibilityOff'
 
-const b = block('user_card');
+const b = block('user_card')
 
 const UserItem: FC<IUser> = ({ avatar_url, login, id, html_url, draggable, onDragStart }) => {
     const [open, setOpen] = useState(false)
+
     return (
         <div
             className={ b() }
@@ -44,7 +45,7 @@ const UserItem: FC<IUser> = ({ avatar_url, login, id, html_url, draggable, onDra
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default UserItem

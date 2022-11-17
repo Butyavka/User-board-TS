@@ -6,7 +6,7 @@ const Icon: FC<IICON> = ({ icon, className }) => {
         <div className={ className ? className : '' }>
             {icon}
         </div>
-    );
-};
+    )
+}
 
-export default Icon;
+export default Icon
