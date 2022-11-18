@@ -7,15 +7,15 @@ export interface IUser {
     avatar_url: string;
     draggable?: boolean;
     onDragStart?: () => void;
-    onDragEnd?: DragEvent;
-    onDragLeave?: DragEvent;
-    onDragOver?: DragEvent;
-    onDrop?: DragEvent;
+    onDragEnd?: (e: DragEvent, user: IUser) => void;
+    onDragLeave?: (e: any) => void;
+    onDragOver?: (e: any) => void;
+    onDrop?: (e: DragEvent, user: IUser, board: IUserList) => void;
 }
 
 export interface IUserList {
     users: IUser[];
-    loading: boolean;
+    loading?: boolean;
     header: string | React.ReactNode;
 }
 
