@@ -14,6 +14,7 @@
   }
 
   &__header {
+    position:relative;
     padding: 10px;
     display: flex;
     align-items: center;
@@ -35,11 +36,6 @@
       display: flex;
       column-gap: 20px;
     }
-  }
-
-  &__icon {
-    width: 20px;
-    fill: $white;
   }
 
   &__avatar {
@@ -84,5 +80,37 @@
   &__id {
     font-size: 18px;
     font-weight: bold;
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    column-gap: 10px
+  }
+
+  &__button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: transparent;
+    background-size: cover;
+    cursor: pointer;
+
+    &_delete {
+      background-image: url(../../assets/icons/delete-fill.svg);
+    }
+
+    &_visibility {
+      background-image: url(../../assets/icons/visibility-fill.svg);
+    }
+
+    &_invisibility {
+      background-image: url(../../assets/icons/invisibility-fill.svg);
+    }
+
+    &_favorite {
+      background-image: url(../../assets/icons/star-fill.svg);
+      cursor: auto;
+    }
   }
 }

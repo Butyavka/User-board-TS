@@ -1,14 +1,23 @@
 import './style.scss'
 import React, {FC, useState} from 'react'
-import {IUser} from '../../types/types'
+import {User} from '../../types/types'
 import block from 'bem-cn-lite'
-import Visibility from '../icons/Visibility'
-import Icon from '../Icon'
-import VisibilityOff from '../icons/VisibilityOff'
 
 const b = block('user-card')
 
-const UserItem: FC<IUser> = ({ avatar_url, login, id, html_url, draggable, onDragStart, onDragOver, onDragLeave }) => {
+const UserItem: FC<User> = ({
+  avatar_url,
+  login,
+  id,
+  html_url,
+  draggable,
+  onDragStart,
+  onDragOver,
+  onDragLeave,
+  onDrop,
+  isFavorite,
+  canDelete
+}) => {
   const [open, setOpen] = useState(false)
 
   return (
@@ -18,10 +27,10 @@ const UserItem: FC<IUser> = ({ avatar_url, login, id, html_url, draggable, onDra
       onDragStart={ () => onDragStart && onDragStart() }
       onDragOver={ (e) => onDragOver && onDragOver(e) }
       onDragLeave={ (e) => onDragLeave && onDragLeave(e) }
+      onDrop={ (e) => onDrop && onDrop(e) } 
     >
       <div
         className={ b('header') }
-        onClick={ () => setOpen(!open) }
       >
         <div className={ b('name-box') }>
           <div className={ b('id') }>ID: {id}</div>
@@ -29,7 +38,11 @@ const UserItem: FC<IUser> = ({ avatar_url, login, id, html_url, draggable, onDra
             {login}
           </div>
         </div>
-        <Icon icon={ open ? <VisibilityOff/> : <Visibility/> } className={ b('icon') }/>
+        <div className={ b('buttons') }>
+          {canDelete && <button className={ b('button', { delete: true }) }/>}
+          {isFavorite && <div className={ b('button', { favorite: true }) }/>}
+          <button onClick={ () => setOpen(!open) } className={ b('button', { visibility: !open, invisibility: open }) }/>
+        </div>
       </div>
       <div className={ b('card', { open }) }>
         <div className={ b('top') }>

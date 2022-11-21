@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import Layout from './components/Layout'
-import {IUser, IUserList} from './types/types'
+import {id, User, UserList} from './types/types'
 import {getUsers} from './api/getUsers'
 import UserItem from './components/UserItem'
 import './components/UserList/style.scss'
@@ -10,20 +10,26 @@ import Loading from './components/Loading'
 
 const b = block('user-list')
 
+const LISTS = {
+  ALL: 'all',
+  FAVORITE: 'favorite'
+}
+
 const App = () => {
-  const [users, setUsers] = useState<IUser[]>([])
-  const [currentUser, setCurrentUser] = useState<IUser>()
-  const [favoriteUsers, setFavoriteUsers] = useState<IUser[]>([])
+  const [users, setUsers] = useState<User[]>([])
+  const [currentUser, setCurrentUser] = useState<User>()
+  const [currentList, setCurrentList] = useState<UserList>()
+  const [favoriteUsers, setFavoriteUsers] = useState<User[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const lists = [
     {
-      id: 'all',
+      id: LISTS.ALL,
       users: users,
       setUsers: setUsers,
       header: 'All Users'
     },
     {
-      id: 'favorite',
+      id: LISTS.FAVORITE,
       users: favoriteUsers,
       setUsers: setFavoriteUsers,
       header: 'Favorite Users'
@@ -35,20 +41,24 @@ const App = () => {
     getUsers()
       .then(res => {
         setUsers(res.data)
+        setFavoriteUsers([res.data[0]])
         setLoading(false)
       })
       .catch(e => console.log(e))
   }, [])
 
-  function dragStartHandler(user: IUser): () => void {
+  function dragStartHandler(user: User, list: UserList): () => void {
+    return () => {
+      setCurrentUser(user)
+      setCurrentList(list)
+    }
+  }
+
+  function dragEndHandler(e: DragEvent, user: User): () => void {
     return () => setCurrentUser(user)
   }
 
-  function dragEndHandler(e: DragEvent, user: IUser): () => void {
-    return () => setCurrentUser(user)
-  }
-
-  function dragOverHandler(user: IUser, board: IUserList): (e: any) => void {
+  function dragOverHandler(): (e: any) => void {
     return (e) => {
       e.preventDefault()
       if (e.target.className === 'user-card__header') {
@@ -57,7 +67,7 @@ const App = () => {
     }
   }
 
-  function dragLeaveHandler(user: IUser, board: IUserList): (e: any) => void  {
+  function dragLeaveHandler(): (e: any) => void  {
     return (e) => {
       e.preventDefault()
       if (e.target.className === 'user-card__header') {
@@ -66,13 +76,30 @@ const App = () => {
     }
   }
 
-  function dropHandler(user: IUser, board: IUserList): (e: DragEvent) => void {
-    return (e: DragEvent) => e.preventDefault()
+  function dropHandler(user: User, list: UserList): (e: DragEvent) => void {
+    return (e: DragEvent) => {
+      e.preventDefault()
+      if (list.id === LISTS.FAVORITE && currentUser) {
+        const isFavoriteUser = !!favoriteUsers.find((user: User) => user.id === currentUser.id)
+
+        if (isFavoriteUser) return null
+
+        setFavoriteUsers([...favoriteUsers, currentUser])
+      }
+    }
   }
 
-  const getContent = (users: IUser[], list: IUserList) => {
+  const isFavorite = (id: string | number) => {
+    return !!favoriteUsers.find((user: User) => user.id === id)
+  }
+
+  const deleteFromFavorite = (id: id) => {
+    return () => console.log(id)
+  }
+
+  const getContent = (users: User[], list: UserList) => {
     const empty = users.length === 0
-    if (empty) return <Empty/>
+    // if (empty) return <Empty/>
 
     return (
       <div className={ b('list') }>
@@ -80,15 +107,18 @@ const App = () => {
           <UserItem
             key={ user.id }
             onDrop={ dropHandler(user, list) }
-            onDragStart={ dragStartHandler(user) }
-            onDragEnd={ (e: DragEvent, user: IUser) => dragEndHandler(e, user) }
-            onDragOver={ dragOverHandler(user, list) }
-            onDragLeave={ dragLeaveHandler(user, list) }
+            onDragStart={ dragStartHandler(user, list) }
+            onDragEnd={ (e: DragEvent, user: User) => dragEndHandler(e, user) }
+            onDragOver={ dragOverHandler() }
+            onDragLeave={ dragLeaveHandler() }
             draggable={ true }
             id={ user.id }
             avatar_url={ user.avatar_url }
             html_url={ user.html_url }
             login={ user.login }
+            isFavorite={ list.id === LISTS.FAVORITE ? false : isFavorite(user.id) }
+            canDelete={ list.id === LISTS.FAVORITE }
+            delete={ deleteFromFavorite(user.id) }
           />
         ))}
       </div>

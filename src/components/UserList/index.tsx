@@ -1,18 +1,18 @@
 import './style.scss'
 import React, {FC, useState} from 'react'
-import {IUser, IUserList} from '../../types/types'
+import {User, UserList} from '../../types/types'
 import UserItem from '../UserItem'
 import block from 'bem-cn-lite'
 import Loading from '../Loading'
 import Empty from '../Empty'
 const b = block('user-list')
 
-const UserList: FC<IUserList> = ({ users, loading, header }) => {
-  const [currentUser, setCurrentUser] = useState<IUser>()
+const UserList: FC<UserList> = ({ users, loading, header }) => {
+  const [currentUser, setCurrentUser] = useState<User>()
 
   const empty = users.length === 0
 
-  function dragStartHandler(user: IUser): () => void {
+  function dragStartHandler(user: User): () => void {
     return () => setCurrentUser(user)
   }
   const getContent = () => {
