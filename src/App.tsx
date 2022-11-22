@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import Layout from './components/Layout'
-import {id, User, UserList} from './types/types'
+import {User, UserList as IUserList} from './types/types'
 import {getUsers} from './api/getUsers'
 import UserItem from './components/UserItem'
 import './components/UserList/style.scss'
 import Empty from './components/Empty'
 import block from 'bem-cn-lite'
-import Loading from './components/Loading'
+import UserList from './components/UserList'
 
 const b = block('user-list')
 
@@ -17,21 +17,18 @@ const LISTS = {
 
 const App = () => {
   const [users, setUsers] = useState<User[]>([])
-  const [currentUser, setCurrentUser] = useState<User>()
-  const [currentList, setCurrentList] = useState<UserList>()
+  const [favoriteActive, setFavoriteActive] = useState(false)
   const [favoriteUsers, setFavoriteUsers] = useState<User[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const lists = [
     {
       id: LISTS.ALL,
       users: users,
-      setUsers: setUsers,
       header: 'All Users'
     },
     {
       id: LISTS.FAVORITE,
       users: favoriteUsers,
-      setUsers: setFavoriteUsers,
       header: 'Favorite Users'
     }
   ]
@@ -41,51 +38,31 @@ const App = () => {
     getUsers()
       .then(res => {
         setUsers(res.data)
-        setFavoriteUsers([res.data[0]])
         setLoading(false)
       })
       .catch(e => console.log(e))
   }, [])
 
-  function dragStartHandler(user: User, list: UserList): () => void {
-    return () => {
-      setCurrentUser(user)
-      setCurrentList(list)
+  function dragStartHandler(user: User): (e: any) => void {
+    return (e: any) => {
+      e.dataTransfer.setData('user', JSON.stringify(user))
     }
   }
 
-  function dragEndHandler(e: DragEvent, user: User): () => void {
-    return () => setCurrentUser(user)
+  function dragEndHandler(): void {
+    setFavoriteActive(false)
   }
 
-  function dragOverHandler(): (e: any) => void {
-    return (e) => {
-      e.preventDefault()
-      if (e.target.className === 'user-card__header') {
-        e.target.style.backgroundColor = '#48BCD9'
-      }
-    }
-  }
+  function dropHandler(e: DragEvent) {
+    e.preventDefault()
+    const currentUser = e.dataTransfer?.getData('user') &&  JSON.parse(e.dataTransfer?.getData('user'))
 
-  function dragLeaveHandler(): (e: any) => void  {
-    return (e) => {
-      e.preventDefault()
-      if (e.target.className === 'user-card__header') {
-        e.target.style.backgroundColor = ''
-      }
-    }
-  }
+    if (currentUser) {
+      const isFavoriteUser = !!favoriteUsers.find((user: User) => user.id === currentUser.id)
 
-  function dropHandler(user: User, list: UserList): (e: DragEvent) => void {
-    return (e: DragEvent) => {
-      e.preventDefault()
-      if (list.id === LISTS.FAVORITE && currentUser) {
-        const isFavoriteUser = !!favoriteUsers.find((user: User) => user.id === currentUser.id)
+      if (isFavoriteUser) return null
 
-        if (isFavoriteUser) return null
-
-        setFavoriteUsers([...favoriteUsers, currentUser])
-      }
+      setFavoriteUsers([...favoriteUsers, currentUser])
     }
   }
 
@@ -93,51 +70,78 @@ const App = () => {
     return !!favoriteUsers.find((user: User) => user.id === id)
   }
 
-  const deleteFromFavorite = (id: id) => {
-    return () => console.log(id)
+  const deleteFromFavorite = (user: User) => {
+    return () => {
+      const index = favoriteUsers.indexOf(user)
+      const newList = favoriteUsers
+      newList.splice(index, 1)
+      setFavoriteUsers(newList)
+    }
   }
 
-  const getContent = (users: User[], list: UserList) => {
+  const dragOverHandler = (e: any) => {
+    e.preventDefault()
+    setFavoriteActive(true)
+  }
+
+  const getContent = (users: User[], list: IUserList) => {
+    const isFavoriteList = list.id === LISTS.FAVORITE
     const empty = users.length === 0
-    // if (empty) return <Empty/>
+
+    if (empty) return <Empty/>
 
     return (
-      <div className={ b('list') }>
+      <>
         {users.map(user => (
           <UserItem
             key={ user.id }
-            onDrop={ dropHandler(user, list) }
-            onDragStart={ dragStartHandler(user, list) }
-            onDragEnd={ (e: DragEvent, user: User) => dragEndHandler(e, user) }
-            onDragOver={ dragOverHandler() }
-            onDragLeave={ dragLeaveHandler() }
-            draggable={ true }
+            onDragStart={ dragStartHandler(user) }
+            onDragEnd={ dragEndHandler }
+            draggable={ !isFavoriteList }
             id={ user.id }
             avatar_url={ user.avatar_url }
             html_url={ user.html_url }
             login={ user.login }
-            isFavorite={ list.id === LISTS.FAVORITE ? false : isFavorite(user.id) }
-            canDelete={ list.id === LISTS.FAVORITE }
-            delete={ deleteFromFavorite(user.id) }
+            isFavorite={ isFavoriteList ? false : isFavorite(user.id) }
+            canDelete={ isFavoriteList }
+            deleteElement={ deleteFromFavorite(user) }
           />
         ))}
-      </div>
+      </>
+    )
+  }
+
+  const renderList = (list: IUserList) => {
+    const isFavoriteList = list.id === LISTS.FAVORITE
+    interface DragSettings {
+      onDrop?: (e: DragEvent) => void
+      onDragOver?: (e: DragEvent) => void
+      onDragLeave?: () => void
+    }
+    const dragSettings: DragSettings = {}
+
+    if (isFavoriteList) {
+      dragSettings.onDrop = dropHandler
+      dragSettings.onDragOver = dragOverHandler
+      dragSettings.onDragLeave = () => setFavoriteActive(false)
+    }
+
+    return (
+      <UserList
+        key={ list.id }
+        users={ getContent(list.users, list) }
+        loading={ loading }
+        header={ list.header }
+        active={ isFavoriteList && favoriteActive }
+        {...dragSettings}
+      />
     )
   }
 
   return (
     <Layout>
       <div style={{ display: 'flex', columnGap: '20px', paddingTop: '40px' }} className="dasdf">
-        {lists.map(list => (
-          <div key={list.id } className={ b('list') }>
-            <div className={ b() }>
-              <div  className={ b('header') }>
-                {list.header}
-              </div>
-              {loading ? <Loading/> : getContent(list.users, list)}
-            </div>
-          </div>
-        ))}
+        {lists.map(list => renderList(list))}
       </div>
     </Layout>
   )

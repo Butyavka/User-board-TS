@@ -35,5 +35,9 @@
       background-color: $pink-d9;
       border-radius: 145px;
     }
+
+    &_active {
+      box-shadow: inset 0 0 12px 5px #c1ffc1;
+    }
   }
 }

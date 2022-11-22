@@ -12,11 +12,10 @@ const UserItem: FC<User> = ({
   html_url,
   draggable,
   onDragStart,
-  onDragOver,
-  onDragLeave,
-  onDrop,
+  onDragEnd,
   isFavorite,
-  canDelete
+  canDelete,
+  deleteElement
 }) => {
   const [open, setOpen] = useState(false)
 
@@ -24,10 +23,8 @@ const UserItem: FC<User> = ({
     <div
       className={ b() }
       draggable={ draggable }
-      onDragStart={ () => onDragStart && onDragStart() }
-      onDragOver={ (e) => onDragOver && onDragOver(e) }
-      onDragLeave={ (e) => onDragLeave && onDragLeave(e) }
-      onDrop={ (e) => onDrop && onDrop(e) } 
+      onDragStart={ (e) => onDragStart && onDragStart(e) }
+      onDragEnd={ (e) => onDragEnd && onDragEnd(e) }
     >
       <div
         className={ b('header') }
@@ -39,7 +36,7 @@ const UserItem: FC<User> = ({
           </div>
         </div>
         <div className={ b('buttons') }>
-          {canDelete && <button className={ b('button', { delete: true }) }/>}
+          {canDelete && <button onClick={ deleteElement } className={ b('button', { delete: true }) }/>}
           {isFavorite && <div className={ b('button', { favorite: true }) }/>}
           <button onClick={ () => setOpen(!open) } className={ b('button', { visibility: !open, invisibility: open }) }/>
         </div>
