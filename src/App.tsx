@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import Layout from './components/Layout'
-import {User, UserList as IUserList} from './types/types'
+import {id, User, UserList as IUserList} from './types/types'
 import {getUsers} from './api/getUsers'
 import UserItem from './components/UserItem'
 import './components/UserList/style.scss'
 import Empty from './components/Empty'
-import block from 'bem-cn-lite'
 import UserList from './components/UserList'
-
-const b = block('user-list')
 
 const LISTS = {
   ALL: 'all',
@@ -71,12 +68,10 @@ const App = () => {
   }
 
   const deleteFromFavorite = (user: User) => {
-    return () => {
-      const index = favoriteUsers.indexOf(user)
-      const newList = favoriteUsers
-      newList.splice(index, 1)
-      setFavoriteUsers(newList)
-    }
+    const index = favoriteUsers.indexOf(user)
+    const newList = favoriteUsers
+    newList.splice(index, 1)
+    setFavoriteUsers([...newList])
   }
 
   const dragOverHandler = (e: any) => {
@@ -84,8 +79,8 @@ const App = () => {
     setFavoriteActive(true)
   }
 
-  const getContent = (users: User[], list: IUserList) => {
-    const isFavoriteList = list.id === LISTS.FAVORITE
+  const renderUsers = (users: User[], id: id) => {
+    const isFavoriteList = id === LISTS.FAVORITE
     const empty = users.length === 0
 
     if (empty) return <Empty/>
@@ -104,7 +99,7 @@ const App = () => {
             login={ user.login }
             isFavorite={ isFavoriteList ? false : isFavorite(user.id) }
             canDelete={ isFavoriteList }
-            deleteElement={ deleteFromFavorite(user) }
+            deleteElement={ () => deleteFromFavorite(user) }
           />
         ))}
       </>
@@ -129,7 +124,9 @@ const App = () => {
     return (
       <UserList
         key={ list.id }
-        users={ getContent(list.users, list) }
+        id={ list.id }
+        users={ list.users }
+        renderUsers={ renderUsers }
         loading={ loading }
         header={ list.header }
         active={ isFavoriteList && favoriteActive }
@@ -140,7 +137,7 @@ const App = () => {
 
   return (
     <Layout>
-      <div style={{ display: 'flex', columnGap: '20px', paddingTop: '40px' }} className="dasdf">
+      <div style={{ display: 'flex', columnGap: '20px', paddingTop: '40px' }}>
         {lists.map(list => renderList(list))}
       </div>
     </Layout>

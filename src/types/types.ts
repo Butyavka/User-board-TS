@@ -17,12 +17,13 @@ export interface User {
 
 export interface UserList {
     id?: id;
-    users: IteratorResult<User> | User[] | any;
+    users: User[] | any;
     loading?: boolean;
     header: string | ReactNode;
     onDrop?: (e: any) => void;
     onDragOver?: (e: any) => void;
     active?: boolean;
+    renderUsers?: any;
 }
 
 

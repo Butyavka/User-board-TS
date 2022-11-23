@@ -5,7 +5,7 @@ import block from 'bem-cn-lite'
 import Loading from '../Loading'
 const b = block('user-list')
 
-const UserList: FC<IUserList> = ({ users, loading, header, onDrop, onDragOver, active }) => (
+const UserList: FC<IUserList> = ({ users, loading, header, onDrop, onDragOver, active, renderUsers, id }) => (
   <div className={ b() }>
     <div  className={ b('header') }>
       {header}
@@ -16,7 +16,7 @@ const UserList: FC<IUserList> = ({ users, loading, header, onDrop, onDragOver, a
         onDrop={ (e) => onDrop && onDrop(e) }
         onDragOver={ (e) => onDragOver && onDragOver(e) }
       >
-        {users}
+        {renderUsers(users, id)}
       </div>
     )}
   </div>

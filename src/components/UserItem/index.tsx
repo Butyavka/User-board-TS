@@ -49,7 +49,7 @@ const UserItem: FC<User> = ({
         </div>
         <div className={ b('bottom') }>
           <div className={ b('link-box') } >
-                        Link to user:
+            Link to user:
             <a className={ b('link') }  href={ html_url } title={ html_url }>
               {html_url}
             </a>
