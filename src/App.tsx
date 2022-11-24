@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { DragEvent, useEffect, useState } from 'react'
 import Layout from './components/Layout'
 import {id, User, UserList as IUserList} from './types/types'
 import {getUsers} from './api/getUsers'
@@ -40,8 +40,8 @@ const App = () => {
       .catch(e => console.log(e))
   }, [])
 
-  function dragStartHandler(user: User): (e: any) => void {
-    return (e: any) => {
+  function dragStartHandler(user: User): (e: DragEvent<HTMLDivElement>) => void {
+    return (e: DragEvent<HTMLDivElement>) => {
       e.dataTransfer.setData('user', JSON.stringify(user))
     }
   }
@@ -50,7 +50,7 @@ const App = () => {
     setFavoriteActive(false)
   }
 
-  function dropHandler(e: DragEvent) {
+  function dropHandler(e: DragEvent<HTMLDivElement>) {
     e.preventDefault()
     const currentUser = e.dataTransfer?.getData('user') &&  JSON.parse(e.dataTransfer?.getData('user'))
 
@@ -74,7 +74,7 @@ const App = () => {
     setFavoriteUsers([...newList])
   }
 
-  const dragOverHandler = (e: any) => {
+  const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     setFavoriteActive(true)
   }
@@ -109,8 +109,8 @@ const App = () => {
   const renderList = (list: IUserList) => {
     const isFavoriteList = list.id === LISTS.FAVORITE
     interface DragSettings {
-      onDrop?: (e: DragEvent) => void
-      onDragOver?: (e: DragEvent) => void
+      onDrop?: (e: DragEvent<HTMLDivElement>) => void
+      onDragOver?: (e: DragEvent<HTMLDivElement>) => void
       onDragLeave?: () => void
     }
     const dragSettings: DragSettings = {}

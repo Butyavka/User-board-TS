@@ -24,7 +24,7 @@ const UserItem: FC<User> = ({
       className={ b() }
       draggable={ draggable }
       onDragStart={ (e) => onDragStart && onDragStart(e) }
-      onDragEnd={ (e) => onDragEnd && onDragEnd(e) }
+      onDragEnd={ () => onDragEnd && onDragEnd() }
     >
       <div
         className={ b('header') }

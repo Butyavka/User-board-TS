@@ -16,7 +16,7 @@ const UserList: FC<IUserList> = ({ users, loading, header, onDrop, onDragOver, a
         onDrop={ (e) => onDrop && onDrop(e) }
         onDragOver={ (e) => onDragOver && onDragOver(e) }
       >
-        {renderUsers(users, id)}
+        {renderUsers && renderUsers(users, id)}
       </div>
     )}
   </div>

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, DragEvent } from 'react'
 
 export type id = string | number
 
@@ -8,22 +8,23 @@ export interface User {
     html_url: string;
     avatar_url: string;
     draggable?: boolean;
-    onDragStart?: (e: any) => void;
-    onDragEnd?: (e: any) => void;
+    onDragStart?: (e: DragEvent<HTMLDivElement>) => void;
+    onDragEnd?: () => void;
     isFavorite?: boolean;
     canDelete?: boolean;
     deleteElement?: () => void;
 }
 
 export interface UserList {
-    id?: id;
-    users: User[] | any;
+    id: id;
+    users: User[];
     loading?: boolean;
     header: string | ReactNode;
-    onDrop?: (e: any) => void;
-    onDragOver?: (e: any) => void;
+    onDrop?: (e: DragEvent<HTMLDivElement>) => void;
+    onDragOver?: (e: DragEvent<HTMLDivElement>) => void;
     active?: boolean;
-    renderUsers?: any;
+    renderUsers?: (users: User[], id: id) => ReactNode;
+    onDragLeave?: () => void;
 }
 
 
