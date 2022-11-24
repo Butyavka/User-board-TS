@@ -6,11 +6,11 @@ import block from 'bem-cn-lite'
 const b = block('empty')
 
 const Empty = () => {
-    return (
-        <div className={ b() }>
+  return (
+    <div className={ b() }>
             No Data
-        </div>
-    )
+    </div>
+  )
 }
 
 export default Empty

@@ -23,7 +23,6 @@
         "prefer-const": "error",
         "quotes": ["error", "single"],
         "jsx-quotes": ["error", "prefer-double"],
-        "no-console": "warn",
         "indent": ["warn", 2],
         "max-len": ["error", {"code":  130}],
         "comma-dangle": ["error", "never"],
