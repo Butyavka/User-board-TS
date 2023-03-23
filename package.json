@@ -1,7 +1,7 @@
 {
   "name": "user-board-ts",
   "version": "0.1.0",
-  "homepage": "https://Butyavka.github.io/user-board-ts",
+  "homepage": "https://butyavka.github.io/user-board-ts",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
