@@ -1,6 +1,7 @@
 {
   "name": "user-board-ts",
   "version": "0.1.0",
+  "homepage": "https://Butyavka.github.io/user-board-ts",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -21,6 +22,8 @@
     "sass": "^1.58.3"
   },
   "scripts": {
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
