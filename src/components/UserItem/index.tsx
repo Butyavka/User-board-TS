@@ -50,7 +50,7 @@ const UserItem: FC<User> = ({
         <div className={ b('bottom') }>
           <div className={ b('link-box') } >
             Link to user:
-            <a className={ b('link') }  href={ html_url } title={ html_url }>
+            <a className={ b('link') }  href={ html_url } title={ html_url } target="_blank" rel="noopener noreferrer">
               {html_url}
             </a>
           </div>
