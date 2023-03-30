@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/user-board-ts/static/css/main.cad4cb04.css",
-    "main.js": "/user-board-ts/static/js/main.170268ce.js",
+    "main.js": "/user-board-ts/static/js/main.267ad213.js",
     "index.html": "/user-board-ts/index.html",
     "static/media/invisibility-fill.svg": "/user-board-ts/static/media/invisibility-fill.0e232ecf992aedc1cbeb.svg",
     "static/media/visibility-fill.svg": "/user-board-ts/static/media/visibility-fill.779d832f0a013c394bf7.svg",
     "static/media/delete-fill.svg": "/user-board-ts/static/media/delete-fill.c4eb0a7aef0d20b1d64f.svg",
     "static/media/star-fill.svg": "/user-board-ts/static/media/star-fill.269ed82800e5721fd35f.svg",
     "main.cad4cb04.css.map": "/user-board-ts/static/css/main.cad4cb04.css.map",
-    "main.170268ce.js.map": "/user-board-ts/static/js/main.170268ce.js.map"
+    "main.267ad213.js.map": "/user-board-ts/static/js/main.267ad213.js.map"
   },
   "entrypoints": [
     "static/css/main.cad4cb04.css",
-    "static/js/main.170268ce.js"
+    "static/js/main.267ad213.js"
   ]
 }
