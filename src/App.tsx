@@ -40,6 +40,23 @@ const App = () => {
       .catch(e => console.log(e))
   }, [])
 
+  useEffect(() => {
+    const localFavoriteList = localStorage.getItem('favoriteUsers')
+
+    if (localFavoriteList) {
+      setFavoriteUsers(JSON.parse(localFavoriteList))
+    }
+  }, [])
+
+  useEffect(() => {
+    const localFavoriteList = localStorage.getItem('favoriteUsers')
+    const currentFavoriteList = JSON.stringify(favoriteUsers)
+
+    if (localFavoriteList !== currentFavoriteList) {
+      localStorage.setItem('favoriteUsers', currentFavoriteList)
+    }
+  }, [favoriteUsers])
+
   function dragStartHandler(user: User): (e: DragEvent<HTMLDivElement>) => void {
     return (e: DragEvent<HTMLDivElement>) => {
       e.dataTransfer.setData('user', JSON.stringify(user))
